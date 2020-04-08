@@ -13,7 +13,7 @@
 
 </div>
 <div>
-    <form method="post">
+    <form method="post" th:action="@{main}">
         <input type="text" name="text" placeholder="Введіть текст повідомлення">
         <input type="text" name="tag" placeholder="Введіть тег">
         <button type="submit">Добавити</button>
@@ -31,6 +31,7 @@
     <b th:text="${message.getId()}" ></b>
     <span th:text="${message.getText()}"></span>
     <i th:text="${message.getTag()}"></i>
+    <strong th:text="${message.getAuthorName()}"></strong>
 </div>
 </body>
 </html>

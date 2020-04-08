@@ -1,8 +1,10 @@
 package com.example.controllers;
 
 import com.example.dao.models.Message;
+import com.example.dao.models.User;
 import com.example.dao.repos.MessageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,7 +20,9 @@ public class MainController {
     private MessageRepository messageRepository;
 
     @GetMapping("/")
-    public String greeting(Model model) {
+    public String greeting(@AuthenticationPrincipal User user,
+            Model model) {
+        model.addAttribute("username", user.getUsername());
         return "greeting";
     }
     @GetMapping("/main")
@@ -28,14 +32,15 @@ public class MainController {
         return "main";
     }
     @PostMapping("main")
-    public String addMessage(@RequestParam String text,
+    public String addMessage(@AuthenticationPrincipal User user,
+                             @RequestParam String text,
                              @RequestParam String tag,
                              Model model){
 
-        Message message = new Message(text, tag);
+        Message message = new Message(text, tag, user);
         messageRepository.save(message);
 
-        return "main";
+        return "redirect:/main";
     }
     @PostMapping("filter")
     public String filter(@RequestParam String filter,
