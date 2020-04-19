@@ -1,0 +1,1 @@
+update sweater.user set password = MD5(password)
